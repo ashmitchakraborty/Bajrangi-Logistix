@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chai & Chill Cafe – Raipur</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --pink:#F9C6D8;--pink-dark:#E8789A;--pink-deep:#C94F79;
+    --lav:#D8CCF5;--lav-dark:#9B82E8;--lav-deep:#5E3FBE;
+    --mint:#C2EDE0;--mint-dark:#5DBFA0;--mint-deep:#1E7D62;
+    --cream:#FFF8F2;--warm:#FFF0F7;--text:#2D1B2E;--muted:#7A5C7E;
+    --font-head:'Playfair Display',serif;--font-body:'DM Sans',sans-serif;
+  }
+  html{scroll-behavior:smooth}
+  body{font-family:var(--font-body);background:var(--cream);color:var(--text);overflow-x:hidden}
+
+  /* ── NAV ── */
+  nav{background:rgba(255,248,242,0.97);backdrop-filter:blur(14px);position:sticky;top:0;z-index:200;padding:1rem 3rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1.5px solid var(--pink)}
+  .logo{font-family:var(--font-head);font-size:1.65rem;color:var(--pink-deep);font-style:italic;text-decoration:none}
+  .logo span{color:var(--lav-deep)}
+  .nav-links{display:flex;gap:2rem;list-style:none}
+  .nav-links a{text-decoration:none;color:var(--muted);font-size:0.9rem;font-weight:500;transition:color .2s}
+  .nav-links a:hover{color:var(--pink-deep)}
+  .nav-cta{background:var(--pink-deep);color:#fff;padding:.55rem 1.5rem;border-radius:50px;font-size:.88rem;font-weight:600;border:none;cursor:pointer;font-family:var(--font-body);transition:background .2s}
+  .nav-cta:hover{background:var(--lav-deep)}
+  .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+  .hamburger span{display:block;width:24px;height:2px;background:var(--pink-deep);border-radius:2px;transition:all .3s}
+  @media(max-width:768px){
+    .nav-links,.nav-cta{display:none}
+    .hamburger{display:flex}
+    .mobile-menu{display:none;position:fixed;top:62px;left:0;right:0;background:var(--cream);border-bottom:2px solid var(--pink);padding:1.5rem 2rem;z-index:199;flex-direction:column;gap:1.2rem}
+    .mobile-menu.open{display:flex}
+    .mobile-menu a{text-decoration:none;color:var(--text);font-weight:500;font-size:1rem}
+  }
+
+  /* ── RIBBON ── */
+  .ribbon{background:var(--pink-deep);color:#fff;padding:.6rem 0;overflow:hidden;white-space:nowrap;font-size:.82rem;font-weight:600;letter-spacing:.03em}
+  .ribbon-inner{display:inline-block;animation:ticker 22s linear infinite}
+  .ribbon-inner span{padding:0 2.5rem}
+  .ribbon-inner span::before{content:'✿  ';opacity:.7}
+  @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+  /* ── HERO ── */
+  .hero{min-height:92vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:3rem 5rem;gap:3rem;background:linear-gradient(135deg,var(--warm) 0%,var(--cream) 60%,#EEF6FF 100%);position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;top:-80px;right:-80px;width:420px;height:420px;background:var(--lav);border-radius:50%;opacity:.25;pointer-events:none}
+  .hero::after{content:'';position:absolute;bottom:-100px;left:-60px;width:320px;height:320px;background:var(--pink);border-radius:50%;opacity:.2;pointer-events:none}
+  .hero-badge{display:inline-block;background:var(--mint);color:var(--mint-deep);padding:.35rem 1rem;border-radius:50px;font-size:.78rem;font-weight:600;letter-spacing:.05em;margin-bottom:1.2rem;text-transform:uppercase}
+  .hero h1{font-family:var(--font-head);font-size:3.8rem;line-height:1.15;margin-bottom:1.2rem}
+  .hero h1 em{color:var(--pink-deep);font-style:italic}
+  .hero p{font-size:1.05rem;color:var(--muted);line-height:1.7;max-width:440px;margin-bottom:2rem}
+  .hero-btns{display:flex;gap:1rem;flex-wrap:wrap}
+  .btn-primary{background:var(--pink-deep);color:#fff;padding:.85rem 2.2rem;border-radius:50px;border:none;font-size:.95rem;font-weight:600;cursor:pointer;font-family:var(--font-body);transition:all .2s}
+  .btn-primary:hover{background:var(--lav-deep);transform:translateY(-2px)}
+  .btn-secondary{background:transparent;color:var(--pink-deep);padding:.85rem 2.2rem;border-radius:50px;border:2px solid var(--pink-deep);font-size:.95rem;font-weight:600;cursor:pointer;font-family:var(--font-body);transition:all .2s}
+  .btn-secondary:hover{background:var(--pink);transform:translateY(-2px)}
+  .hero-visual{display:flex;justify-content:center;align-items:center;position:relative;z-index:1}
+  .hero-float-card{background:#fff;border-radius:28px;padding:2rem;box-shadow:0 24px 64px rgba(201,79,121,.14);max-width:320px;width:100%}
+  .hero-card-img{width:100%;height:190px;background:linear-gradient(135deg,var(--pink) 0%,var(--lav) 100%);border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:4.5rem;margin-bottom:1.2rem}
+  .hero-float-card h3{font-family:var(--font-head);font-size:1.3rem;margin-bottom:.3rem}
+  .hero-float-card p{color:var(--muted);font-size:.87rem;line-height:1.5}
+  .card-tags{display:flex;gap:.5rem;margin-top:.9rem;flex-wrap:wrap}
+  .tag{padding:.3rem .85rem;border-radius:50px;font-size:.75rem;font-weight:600}
+  .tag-pink{background:var(--pink);color:var(--pink-deep)}
+  .tag-mint{background:var(--mint);color:var(--mint-deep)}
+  .tag-lav{background:var(--lav);color:var(--lav-deep)}
+
+  /* ── STATS BAR ── */
+  .stats-bar{background:#fff;padding:2rem 5rem;display:flex;justify-content:space-around;border-bottom:1.5px solid var(--pink);flex-wrap:wrap;gap:1.5rem}
+  .stat{text-align:center}
+  .stat-num{font-family:var(--font-head);font-size:2.2rem;color:var(--pink-deep);font-weight:700}
+  .stat-label{font-size:.82rem;color:var(--muted);font-weight:500;margin-top:.2rem}
+
+  /* ── SECTIONS SHARED ── */
+  section{scroll-margin-top:70px}
+  .section-wrap{padding:5rem 5rem}
+  .section-label{font-size:.78rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--mint-deep);margin-bottom:.5rem}
+  .section-title{font-family:var(--font-head);font-size:2.5rem;margin-bottom:.8rem}
+  .section-sub{color:var(--muted);font-size:1rem;line-height:1.7;margin-bottom:2.5rem;max-width:520px}
+
+  /* ── ORDER ── */
+  #order{background:#fff}
+  .order-toggle{display:flex;background:var(--cream);border-radius:50px;padding:6px;border:2px solid var(--pink);width:fit-content;margin-bottom:2.5rem}
+  .toggle-btn{padding:.7rem 2.2rem;border-radius:50px;border:none;font-size:.92rem;font-weight:600;cursor:pointer;transition:all .25s;background:transparent;color:var(--muted);font-family:var(--font-body)}
+  .toggle-btn.active{background:var(--pink-deep);color:#fff}
+  .order-form{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:720px}
+  .form-group{display:flex;flex-direction:column;gap:.5rem}
+  .form-group label{font-size:.85rem;font-weight:600;color:var(--text)}
+  .form-group input,.form-group select,.form-group textarea{padding:.78rem 1rem;border:1.5px solid #EDD9E8;border-radius:12px;font-size:.92rem;font-family:var(--font-body);background:var(--cream);color:var(--text);transition:border-color .2s;outline:none}
+  .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--pink-deep)}
+  .form-group.full{grid-column:1/-1}
+  .submit-btn{grid-column:1/-1;background:var(--pink-deep);color:#fff;padding:.9rem;border-radius:50px;border:none;font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s;font-family:var(--font-body)}
+  .submit-btn:hover{background:var(--lav-deep);transform:translateY(-2px)}
+
+  /* ── MENU ── */
+  #menu{background:var(--warm)}
+  .menu-tabs{display:flex;gap:.6rem;margin-bottom:2rem;flex-wrap:wrap}
+  .menu-tab{padding:.5rem 1.4rem;border-radius:50px;border:1.5px solid #EDD9E8;font-size:.85rem;font-weight:600;cursor:pointer;background:#fff;color:var(--muted);font-family:var(--font-body);transition:all .2s}
+  .menu-tab.active{background:var(--pink-deep);color:#fff;border-color:var(--pink-deep)}
+  .menu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+  .menu-card{background:#fff;border-radius:22px;overflow:hidden;transition:transform .2s,box-shadow .2s;cursor:pointer}
+  .menu-card:hover{transform:translateY(-6px);box-shadow:0 18px 44px rgba(201,79,121,.14)}
+  .menu-card-img{height:145px;display:flex;align-items:center;justify-content:center;font-size:3.2rem}
+  .menu-card-body{padding:1rem 1.2rem 1.3rem}
+  .menu-card h4{font-family:var(--font-head);font-size:1.1rem;margin-bottom:.3rem}
+  .menu-card p{color:var(--muted);font-size:.83rem;line-height:1.55;margin-bottom:.8rem}
+  .menu-card-footer{display:flex;justify-content:space-between;align-items:center}
+  .price{font-weight:700;color:var(--pink-deep);font-size:1rem}
+  .veg-badge{display:inline-block;width:14px;height:14px;border:2px solid #2e7d32;border-radius:2px;position:relative;margin-right:6px;vertical-align:middle}
+  .veg-badge::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:6px;height:6px;background:#2e7d32;border-radius:50%}
+  .nonveg-badge{display:inline-block;width:14px;height:14px;border:2px solid #c62828;border-radius:2px;position:relative;margin-right:6px;vertical-align:middle}
+  .nonveg-badge::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:6px;height:6px;background:#c62828;border-radius:50%}
+  .add-btn{background:var(--pink);color:var(--pink-deep);border:none;border-radius:50px;padding:.32rem .9rem;font-size:.8rem;font-weight:700;cursor:pointer;transition:background .2s;font-family:var(--font-body)}
+  .add-btn:hover{background:var(--pink-dark);color:#fff}
+  .menu-category{display:none}
+  .menu-category.active{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+
+  /* ── PAYMENT ── */
+  #payment{background:#fff}
+  .payment-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem}
+  .pay-card{background:var(--cream);border:1.5px solid #EDD9E8;border-radius:18px;padding:1.5rem 1rem;text-align:center;transition:all .2s;cursor:pointer}
+  .pay-card:hover{border-color:var(--pink-deep);background:var(--pink);transform:translateY(-3px)}
+  .pay-icon{font-size:2rem;margin-bottom:.6rem}
+  .pay-card h4{font-weight:600;font-size:.92rem;color:var(--text);margin-bottom:.25rem}
+  .pay-card p{color:var(--muted);font-size:.78rem;line-height:1.5}
+
+  /* ── GALLERY ── */
+  #gallery{background:var(--warm)}
+  .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:200px;gap:1rem}
+  .gallery-item{border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:3.5rem;transition:transform .2s;cursor:pointer;overflow:hidden}
+  .gallery-item:hover{transform:scale(1.03)}
+  .gallery-item.tall{grid-row:span 2}
+  .gallery-item.wide{grid-column:span 2}
+
+  /* ── REVIEWS ── */
+  #reviews{background:#fff}
+  .reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+  .review-card{background:var(--warm);border-radius:20px;padding:1.5rem;border:1.5px solid var(--pink)}
+  .stars{color:#F59E0B;font-size:1rem;margin-bottom:.7rem;letter-spacing:.1em}
+  .review-text{font-size:.9rem;color:var(--muted);line-height:1.7;margin-bottom:1rem;font-style:italic}
+  .reviewer{display:flex;align-items:center;gap:.8rem}
+  .reviewer-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.88rem;color:#fff;flex-shrink:0}
+  .reviewer-name{font-weight:600;font-size:.88rem}
+  .reviewer-loc{font-size:.78rem;color:var(--muted)}
+
+  /* ── RESERVATION ── */
+  #reservation{background:linear-gradient(135deg,var(--lav) 0%,var(--pink) 100%)}
+  .reservation-inner{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+  .res-info h2{font-family:var(--font-head);font-size:2.4rem;margin-bottom:.8rem;color:var(--lav-deep)}
+  .res-info p{color:var(--muted);line-height:1.7;margin-bottom:1.5rem}
+  .res-feature{display:flex;align-items:center;gap:.8rem;margin-bottom:.8rem;font-size:.9rem;font-weight:500;color:var(--text)}
+  .res-form{background:#fff;border-radius:24px;padding:2rem}
+  .res-form h3{font-family:var(--font-head);font-size:1.4rem;margin-bottom:1.5rem;color:var(--pink-deep)}
+  .res-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+
+  /* ── HOURS + CONTACT ── */
+  #contact{background:var(--lav);padding:5rem}
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem}
+  .info-box h2{font-family:var(--font-head);font-size:2rem;margin-bottom:1.5rem;color:var(--lav-deep)}
+  .hours-row{display:flex;justify-content:space-between;padding:.7rem 0;border-bottom:1px solid rgba(155,130,232,.25);font-size:.9rem}
+  .hours-row:last-child{border-bottom:none}
+  .hours-row span:first-child{color:var(--muted);font-weight:500}
+  .hours-row span:last-child{font-weight:700;color:var(--lav-deep)}
+  .happy-hour{margin-top:1.5rem;background:#fff;border-radius:16px;padding:1rem 1.2rem;border:1.5px solid var(--lav-dark)}
+  .happy-hour p:first-child{font-size:.85rem;font-weight:700;color:var(--lav-deep);margin-bottom:.3rem}
+  .happy-hour p:last-child{font-size:.83rem;color:var(--muted);line-height:1.6}
+  .contact-item{display:flex;align-items:flex-start;gap:.9rem;margin-bottom:1.3rem}
+  .contact-icon{width:42px;height:42px;background:var(--lav-dark);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+  .contact-info h4{font-weight:600;font-size:.9rem;margin-bottom:.2rem;color:var(--lav-deep)}
+  .contact-info p{font-size:.85rem;color:var(--muted);line-height:1.55}
+  .map-placeholder{background:#fff;border-radius:18px;height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:1.5px dashed var(--lav-dark);margin-top:1.5rem;gap:.5rem}
+  .map-placeholder p{font-size:.85rem;color:var(--muted)}
+
+  /* ── FOOTER ── */
+  footer{background:var(--text);color:#EDD9E8;padding:3rem 5rem}
+  .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:2.5rem}
+  .footer-brand .logo{font-family:var(--font-head);font-size:1.5rem;color:var(--pink);font-style:italic}
+  .footer-brand p{font-size:.84rem;color:#9B82E8;line-height:1.7;margin-top:.8rem;opacity:.85}
+  .footer-col h4{font-size:.85rem;font-weight:700;color:var(--pink);margin-bottom:1rem;text-transform:uppercase;letter-spacing:.08em}
+  .footer-col ul{list-style:none}
+  .footer-col li{margin-bottom:.6rem}
+  .footer-col a{color:#9B82E8;text-decoration:none;font-size:.84rem;transition:color .2s;opacity:.85}
+  .footer-col a:hover{color:var(--pink)}
+  .footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+  .footer-bottom p{font-size:.8rem;color:#9B82E8;opacity:.65}
+  .social-links{display:flex;gap:.8rem}
+  .social-btn{width:36px;height:36px;background:rgba(255,255,255,.08);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem;cursor:pointer;transition:background .2s;border:none;color:#fff}
+  .social-btn:hover{background:var(--pink-deep)}
+
+  /* ── CART WIDGET ── */
+  .cart-fab{position:fixed;bottom:2rem;right:2rem;background:var(--pink-deep);color:#fff;width:58px;height:58px;border-radius:50%;border:none;font-size:1.4rem;cursor:pointer;box-shadow:0 8px 24px rgba(201,79,121,.35);z-index:300;transition:transform .2s;display:flex;align-items:center;justify-content:center}
+  .cart-fab:hover{transform:scale(1.1)}
+  .cart-count{position:absolute;top:-4px;right:-4px;background:var(--lav-deep);color:#fff;width:22px;height:22px;border-radius:50%;font-size:.72rem;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:var(--font-body)}
+  .cart-panel{position:fixed;bottom:5.5rem;right:2rem;background:#fff;border-radius:20px;width:320px;box-shadow:0 20px 60px rgba(0,0,0,.15);z-index:299;display:none;overflow:hidden;border:1.5px solid var(--pink)}
+  .cart-panel.open{display:block}
+  .cart-header{background:var(--pink-deep);color:#fff;padding:1rem 1.2rem;display:flex;justify-content:space-between;align-items:center}
+  .cart-header h4{font-weight:700;font-size:1rem}
+  .cart-close{background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer}
+  .cart-items{padding:1rem 1.2rem;max-height:240px;overflow-y:auto}
+  .cart-item{display:flex;justify-content:space-between;align-items:center;padding:.6rem 0;border-bottom:1px solid #f3e8ef}
+  .cart-item:last-child{border-bottom:none}
+  .cart-item-name{font-size:.88rem;font-weight:600}
+  .cart-item-price{font-size:.85rem;color:var(--pink-deep);font-weight:700}
+  .cart-item-remove{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.9rem;margin-left:.5rem}
+  .cart-empty{text-align:center;padding:2rem;color:var(--muted);font-size:.88rem}
+  .cart-footer{padding:1rem 1.2rem;border-top:1.5px solid var(--pink);display:flex;justify-content:space-between;align-items:center}
+  .cart-total{font-weight:700;color:var(--text);font-size:.95rem}
+  .checkout-btn{background:var(--pink-deep);color:#fff;border:none;border-radius:50px;padding:.55rem 1.4rem;font-size:.85rem;font-weight:700;cursor:pointer;font-family:var(--font-body)}
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:1024px){
+    .hero{padding:3rem 3rem}
+    .section-wrap,.stats-bar{padding:3.5rem 3rem}
+    .footer-grid{grid-template-columns:1fr 1fr;gap:2rem}
+    #contact{padding:3.5rem 3rem}
+  }
+  @media(max-width:768px){
+    .hero{grid-template-columns:1fr;padding:2.5rem 1.5rem;min-height:auto}
+    .hero::before,.hero::after{display:none}
+    .hero h1{font-size:2.5rem}
+    .hero-visual{display:none}
+    .section-wrap{padding:3rem 1.5rem}
+    .stats-bar{padding:1.5rem 1.5rem}
+    .menu-category.active,.menu-grid{grid-template-columns:1fr 1fr}
+    .payment-grid{grid-template-columns:1fr 1fr}
+    .order-form{grid-template-columns:1fr}
+    .order-form .form-group.full{grid-column:1}
+    .reviews-grid{grid-template-columns:1fr}
+    .reservation-inner{grid-template-columns:1fr}
+    .gallery-grid{grid-template-columns:1fr 1fr;grid-auto-rows:160px}
+    .gallery-item.wide{grid-column:span 1}
+    .contact-grid{grid-template-columns:1fr}
+    #contact{padding:3rem 1.5rem}
+    .footer-grid{grid-template-columns:1fr 1fr}
+    footer{padding:2rem 1.5rem}
+    .res-grid{grid-template-columns:1fr}
+  }
+  @media(max-width:480px){
+    .menu-category.active,.menu-grid{grid-template-columns:1fr}
+    .payment-grid{grid-template-columns:1fr 1fr}
+    .gallery-grid{grid-template-columns:1fr;grid-auto-rows:180px}
+    .gallery-item.tall{grid-row:span 1}
+    .footer-grid{grid-template-columns:1fr}
+    .hero h1{font-size:2.1rem}
+  }
+</style>
+</head>
+<body>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#order" onclick="closeMobileMenu()">📋 Order</a>
+  <a href="#menu" onclick="closeMobileMenu()">🍽 Menu</a>
+  <a href="#gallery" onclick="closeMobileMenu()">📸 Gallery</a>
+  <a href="#reviews" onclick="closeMobileMenu()">⭐ Reviews</a>
+  <a href="#reservation" onclick="closeMobileMenu()">🗓 Reserve</a>
+  <a href="#payment" onclick="closeMobileMenu()">💳 Payments</a>
+  <a href="#contact" onclick="closeMobileMenu()">📍 Contact</a>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">Chai <span>&</span> Chill ☕</a>
+  <ul class="nav-links">
+    <li><a href="#order">Order</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#reservation">Reserve</a></li>
+    <li><a href="#payment">Payments</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('reservation').scrollIntoView({behavior:'smooth'})">Reserve a Table</button>
+  <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- TICKER RIBBON -->
+<div class="ribbon">
+  <div class="ribbon-inner">
+    <span>All-Day Brunch</span>
+    <span>Fresh Artisan Coffee</span>
+    <span>Dine In &amp; Takeaway</span>
+    <span>Free WiFi</span>
+    <span>UPI · Cards · Wallets</span>
+    <span>Happy Hour 3–5 PM</span>
+    <span>Open 7 Days</span>
+    <span>All-Day Brunch</span>
+    <span>Fresh Artisan Coffee</span>
+    <span>Dine In &amp; Takeaway</span>
+    <span>Free WiFi</span>
+    <span>UPI · Cards · Wallets</span>
+    <span>Happy Hour 3–5 PM</span>
+    <span>Open 7 Days</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-content">
+    <div class="hero-badge">🌸 Raipur's Favourite All-Day Cafe</div>
+    <h1>Where Every Sip Feels Like <em>Home</em></h1>
+    <p>Artisan coffee, dreamy brunches & the warmth of Indian hospitality — all in one vibrant cafe. Open morning to midnight, every day of the week.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="document.getElementById('order').scrollIntoView({behavior:'smooth'})">Order Now 🛍</button>
+      <button class="btn-secondary" onclick="document.getElementById('menu').scrollIntoView({behavior:'smooth'})">See Full Menu</button>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-float-card">
+      <div class="hero-card-img">☕</div>
+      <h3>Chai & Chill Cafe</h3>
+      <p>Handcrafted drinks & artisan bites, made fresh daily in Raipur, CG</p>
+      <div class="card-tags">
+        <span class="tag tag-pink">Brunch</span>
+        <span class="tag tag-mint">Veg & Non-Veg</span>
+        <span class="tag tag-lav">Coffee Bar</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat"><div class="stat-num">4.9 ★</div><div class="stat-label">Google Rating</div></div>
+  <div class="stat"><div class="stat-num">2,500+</div><div class="stat-label">Happy Customers</div></div>
+  <div class="stat"><div class="stat-num">60+</div><div class="stat-label">Menu Items</div></div>
+  <div class="stat"><div class="stat-num">8 AM–12 AM</div><div class="stat-label">Open Daily</div></div>
+  <div class="stat"><div class="stat-num">8 Ways</div><div class="stat-label">To Pay</div></div>
+</div>
+
+<!-- ORDER SECTION -->
+<section id="order">
+  <div class="section-wrap">
+    <div class="section-label">📋 Place Your Order</div>
+    <div class="section-title">Dine In or Take Away?</div>
+    <p class="section-sub">Choose your experience — cosy table or grab-and-go, we've got you covered every time.</p>
+    <div class="order-toggle">
+      <button class="toggle-btn active" id="btn-dine" onclick="selectMode('dine')">🍽 Dine In</button>
+      <button class="toggle-btn" id="btn-take" onclick="selectMode('take')">🛍 Take Away</button>
+    </div>
+    <div class="order-form">
+      <div class="form-group">
+        <label>Your Name</label>
+        <input type="text" id="o-name" placeholder="Priya Sharma">
+      </div>
+      <div class="form-group">
+        <label>Phone / WhatsApp</label>
+        <input type="tel" id="o-phone" placeholder="+91 98765 43210">
+      </div>
+      <div class="form-group" id="table-field">
+        <label>Table Preference</label>
+        <select id="o-table">
+          <option>Window Seat 🌿</option>
+          <option>Cosy Corner 🕯</option>
+          <option>Open Terrace ☀️</option>
+          <option>Private Booth 💜</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Number of Guests</label>
+        <select id="o-guests">
+          <option>1 Person</option>
+          <option>2 People</option>
+          <option>3–4 People</option>
+          <option>5+ People (Group)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Preferred Date</label>
+        <input type="date" id="o-date">
+      </div>
+      <div class="form-group">
+        <label>Preferred Time</label>
+        <input type="time" id="o-time">
+      </div>
+      <div class="form-group full">
+        <label>Special Requests / Dietary Needs</label>
+        <textarea id="o-notes" rows="3" placeholder="e.g. no onion, extra spicy, nut allergy, birthday decoration..."></textarea>
+      </div>
+      <button class="submit-btn" onclick="handleOrder()">Confirm Order ✨</button>
+    </div>
+  </div>
+</section>
+
+<!-- MENU SECTION -->
+<section id="menu">
+  <div class="section-wrap">
+    <div class="section-label">🌸 Our Menu</div>
+    <div class="section-title">Fresh & Fabulous Picks</div>
+    <p class="section-sub">From masala lattes to fluffy pancakes — a menu that makes every visit special.</p>
+
+    <div class="menu-tabs">
+      <button class="menu-tab active" onclick="filterMenu('all',this)">All Items</button>
+      <button class="menu-tab" onclick="filterMenu('drinks',this)">☕ Drinks</button>
+      <button class="menu-tab" onclick="filterMenu('brunch',this)">🥞 Brunch</button>
+      <button class="menu-tab" onclick="filterMenu('mains',this)">🍛 Mains</button>
+      <button class="menu-tab" onclick="filterMenu('desserts',this)">🍰 Desserts</button>
+    </div>
+
+    <div class="menu-grid" id="menu-grid">
+      <!-- DRINKS -->
+      <div class="menu-card" data-cat="drinks">
+        <div class="menu-card-img" style="background:linear-gradient(135deg,#FFE4C0,#FBBF89)">☕</div>
+        <div class="menu-card-body">
+          <h4><span class="veg-badge"></span>Masala Latte</h4>
+          <p>Classic Indian spices meet velvety espresso — the perfect morning hug in a cup</p>
+          <div class="menu-card-footer"><span class="price">₹ 180</span><button class="add-btn" onclick="addToCart('Masala Latte',180)">+ Add</button></div>
+        </div>
+      </div>
+      <div class="menu-card" data-cat="drinks">
+        <div class="menu-card-img" style="background:linear-gradient(135deg,#C2EDE0,#8FE0C4)">🍵</div>
+        <div class="menu-card-body">
+          <h4><span class="veg-badge"></span>Saffron Chai</h4>
+          <p>Premium kesar with full-cream milk and hand-ground spices, served in a kulhad</p>
+          <div class="menu-card-footer"><span class="price">₹ 120</span><button class="add-btn" onclick="addToCart('Saffron Chai',120)">+ Add</button></div>
+        </div>
+      </div>
+      <div class="menu-card" data-cat="drinks">
+        <div class="menu-card-img" style="background:linear-gradient(135deg,#D8CCF5,#C4B3F5)">🧋</div>
+        <div class="menu-card-body">
+          <h4><span class="veg-badge"></span>Lavender Frappe</h4>
+          <p>Chilled blended coffee with lavender syrup, topped with whipped cream & dried blooms</p>
+          <div class="menu-card-footer"><span class="price">₹ 210</span><button class="add-btn" onclick="addToCart('Lavender Frappe',210)">+ Add</button></div>
+        </div>
+      </div>
+      <!-- BRUNCH -->
+      <div class="menu-card" data-cat="brunch">
+        <div class="menu-card-img" style="background:linear-gradient(135deg,var(--pink),#F7A8C4)">🥞</div>
+        <div class="menu-card-body">
+          <h4><span class="veg-badge"></span>Blueberry Pancakes</h4>
+          <p>Fluffy stacks with fresh berries, maple syrup & whipped cream — weekend favourite</p>
+          <div class="menu-card-footer"><span class="price">₹ 260</span><button class="add-btn" onclick="addToCart('Blueberry Pancakes',260)">+ Add</button></div>
+        </div>
+      </div>
+      <div class="menu-card" data-cat="brunch">
+        <div class="menu-card-img" style="background:linear-gradient(135deg,#C2EDE0,#8FE0C4)">🥗</div>
+        <div class="menu-card-body">
+          <h4><span class="veg-badge"></span>Avocado Toast</h4>
+          <p>Sourdough with smashed avocado, cherry tomatoes, micro greens & a poached egg</p>
+          <div class="menu-card-footer"><span class="price">₹ 220</span><button class="add-btn" onclick="addToCart('Avocado Toast',220)">+ Add</button></div>
+        </div>
+      </div>
+      <div class="menu-card" data-cat="brunch">
+        <div class="menu-card-img" style="background:linear-gradient(135deg,#FFF3C0,#FFD966)">🍳</div>
+        <div class="menu-card-body">
+          <h4><span class="nonveg-badge"></span>Eggs Benedict</h4>
+          <p>Poached eggs on a toasted muffin with hollandaise sauce & smoked chicken</p>
+          <div class="menu-card-footer"><span class="price">₹ 300</span><button class="add-btn" onclick="addToCart('Eggs Benedict',300)">+ Add</button></div>
+        </div>
+      </div>
+      <!-- MAINS -->
+      <div class="menu-card" data-cat="mains">
+        <div class="menu-card-img" style="background:linear-gradient(135deg,#FFE4C0,#F5A76B)">🧆</div>
+        <div class="menu-card-body">
+          <h4><span class="veg-badge"></span>Chole Bruschetta</h4>
+          <p>Indian twist — spiced chickpeas on toasted baguette, topped with coriander chutney</p>
+          <div class="menu-card-footer"><span class="price">₹ 200</span><button class="add-btn" onclick="addToCart('Chole Bruschetta',200)">+ Add</button></div>
+        </div>
+      </div>
+      <div class="menu-card" data-cat="mains">
+        <div class="menu-card-img" style="background:linear-gradient(135deg,#F9C6D8,#F7A8C4)">🥙</div>
+        <div class="menu-card-body">
+          <h4><span class="nonveg-badge"></span>Chicken Quesadilla</h4>
+          <p>Grilled tortilla loaded with spiced chicken, cheddar, jalapeños & sour cream</p>
+          <div class="menu-card-footer"><span class="price">₹ 320</span><button class="add-btn" onclick="addToCart('Chicken Quesadilla',320)">+ Add</button></div>
+        </div>
+      </div>
+      <div class="menu-card" data-cat="mains">
+        <div class="menu-card-img" style="background:linear-gradient(135deg,#C2EDE0,#5DBFA0)">🫕</div>
+        <div class="menu-card-body">
+          <h4><span class="veg-badge"></span>Paneer Pasta</h4>
+          <p>Penne in a tangy masala-arrabbiata sauce with grilled paneer and fresh basil</p>
+          <div class="menu-card-footer"><span class="price">₹ 280</span><button class="add-btn" onclick="addToCart('Paneer Pasta',280)">+ Add</button></div>
+        </div>
+      </div>
+      <!-- DESSERTS -->
+      <div class="menu-card" data-cat="desserts">
+        <div class="menu-card-img" style="background:linear-gradient(135deg,#D8CCF5,var(--lav))">🍰</div>
+        <div class="menu-card-body">
+          <h4><span class="veg-badge"></span>Rose Tres Leches</h4>
+          <p>Moist sponge soaked in rose-milk with edible petals & cardamom cream</p>
+          <div class="menu-card-footer"><span class="price">₹ 240</span><button class="add-btn" onclick="addToCart('Rose Tres Leches',240)">+ Add</button></div>
+        </div>
+      </div>
+      <div class="menu-card" data-cat="desserts">
+        <div class="menu-card-img" style="background:linear-gradient(135deg,var(--pink),#F9C6D8)">🍓</div>
+        <div class="menu-card-body">
+          <h4><span class="veg-badge"></span>Berry Smoothie Bowl</h4>
+          <p>Acai base, seasonal fruits, granola, coconut flakes & a drizzle of honey</p>
+          <div class="menu-card-footer"><span class="price">₹ 290</span><button class="add-btn" onclick="addToCart('Berry Smoothie Bowl',290)">+ Add</button></div>
+        </div>
+      </div>
+      <div class="menu-card" data-cat="desserts">
+        <div class="menu-card-img" style="background:linear-gradient(135deg,#FFE4C0,#FFD966)">🧁</div>
+        <div class="menu-card-body">
+          <h4><span class="veg-badge"></span>Gulkand Cupcake</h4>
+          <p>Vanilla sponge with gulkand buttercream, topped with crushed rose petals & pistachio</p>
+          <div class="menu-card-footer"><span class="price">₹ 160</span><button class="add-btn" onclick="addToCart('Gulkand Cupcake',160)">+ Add</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="section-wrap">
+    <div class="section-label">📸 Our Vibe</div>
+    <div class="section-title">A Peek Inside Chai & Chill</div>
+    <p class="section-sub">Sun-drenched tables, dreamy decor and food that's almost too pretty to eat.</p>
+    <div class="gallery-grid">
+      <div class="gallery-item tall" style="background:linear-gradient(160deg,var(--pink),#F7A8C4)">☕</div>
+      <div class="gallery-item" style="background:linear-gradient(135deg,var(--mint),#8FE0C4)">🥞</div>
+      <div class="gallery-item" style="background:linear-gradient(135deg,var(--lav),#C4B3F5)">🌸</div>
+      <div class="gallery-item wide" style="background:linear-gradient(135deg,#FFE4C0,#FBBF89)">🧁  ☕  🍓</div>
+      <div class="gallery-item" style="background:linear-gradient(135deg,var(--pink),var(--lav))">🍰</div>
+      <div class="gallery-item tall" style="background:linear-gradient(160deg,var(--mint),var(--lav))">🎨</div>
+      <div class="gallery-item" style="background:linear-gradient(135deg,#FFF3C0,#FFD966)">🥗</div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="section-wrap">
+    <div class="section-label">⭐ Customer Love</div>
+    <div class="section-title">What Raipur is Saying</div>
+    <p class="section-sub">Real reviews from our lovely guests. Your next great cafe memory starts here.</p>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">"Absolute gem in Raipur! The masala latte is life-changing and the decor is so Instagram-worthy. Comes here every Sunday with my family."</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar" style="background:var(--pink-deep)">PS</div>
+          <div><div class="reviewer-name">Priya Sharma</div><div class="reviewer-loc">📍 Civil Lines, Raipur</div></div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">"Best brunch spot in the city, hands down. Tried the Rose Tres Leches and it was divine. Staff is super warm and attentive. Highly recommended!"</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar" style="background:var(--lav-deep)">AK</div>
+          <div><div class="reviewer-name">Arjun Khanna</div><div class="reviewer-loc">📍 Shankar Nagar, Raipur</div></div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">"Took my team here for a working lunch — the vibes, food and ambiance were all perfect. UPI payments were seamless. Already planning the next visit!"</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar" style="background:var(--mint-deep)">RM</div>
+          <div><div class="reviewer-name">Riya Mehta</div><div class="reviewer-loc">📍 VIP Road, Raipur</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESERVATION -->
+<section id="reservation">
+  <div class="section-wrap">
+    <div class="reservation-inner">
+      <div class="res-info">
+        <div class="section-label" style="color:var(--lav-deep)">🗓 Book a Table</div>
+        <h2>Reserve Your Spot</h2>
+        <p>Planning a special occasion or a quiet brunch? Book a table and we'll make sure everything is perfect when you arrive.</p>
+        <div class="res-feature">🎂 Birthday & Anniversary setups available</div>
+        <div class="res-feature">👥 Group bookings up to 30 people</div>
+        <div class="res-feature">📞 Confirmation via WhatsApp within 1 hour</div>
+        <div class="res-feature">🌿 Outdoor terrace & private booths available</div>
+      </div>
+      <div class="res-form">
+        <h3>Make a Reservation</h3>
+        <div class="res-grid">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="r-name" placeholder="Your name">
+          </div>
+          <div class="form-group">
+            <label>Phone / WhatsApp</label>
+            <input type="tel" id="r-phone" placeholder="+91 98765 43210">
+          </div>
+          <div class="form-group">
+            <label>Date</label>
+            <input type="date" id="r-date">
+          </div>
+          <div class="form-group">
+            <label>Time</label>
+            <input type="time" id="r-time">
+          </div>
+          <div class="form-group">
+            <label>Guests</label>
+            <select id="r-guests">
+              <option>1–2 Guests</option>
+              <option>3–4 Guests</option>
+              <option>5–8 Guests</option>
+              <option>9–15 Guests</option>
+              <option>16–30 Guests (Group)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Occasion</label>
+            <select id="r-occasion">
+              <option>Regular Visit</option>
+              <option>Birthday 🎂</option>
+              <option>Anniversary 💕</option>
+              <option>Business Lunch</option>
+              <option>Date Night</option>
+              <option>Family Gathering</option>
+            </select>
+          </div>
+          <div class="form-group" style="grid-column:1/-1">
+            <label>Special Requests</label>
+            <textarea id="r-notes" rows="2" placeholder="Decorations, dietary needs, preferred table..."></textarea>
+          </div>
+          <button class="submit-btn" style="grid-column:1/-1" onclick="handleReservation()">Reserve Now 🌸</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAYMENT -->
+<section id="payment">
+  <div class="section-wrap">
+    <div class="section-label">💳 We Accept</div>
+    <div class="section-title">All Your Favourite Payment Methods</div>
+    <p class="section-sub">Pay however you like — fast, safe & completely hassle-free at the counter or online.</p>
+    <div class="payment-grid">
+      <div class="pay-card">
+        <div class="pay-icon">📱</div>
+        <h4>UPI / QR Code</h4>
+        <p>PhonePe · GPay · BHIM · Paytm</p>
+      </div>
+      <div class="pay-card">
+        <div class="pay-icon">💳</div>
+        <h4>Debit & Credit Cards</h4>
+        <p>Visa · Mastercard · RuPay · Amex</p>
+      </div>
+      <div class="pay-card">
+        <div class="pay-icon">👛</div>
+        <h4>Digital Wallets</h4>
+        <p>Paytm · Amazon Pay · JioMoney</p>
+      </div>
+      <div class="pay-card">
+        <div class="pay-icon">🏦</div>
+        <h4>Net Banking</h4>
+        <p>All major Indian banks supported</p>
+      </div>
+      <div class="pay-card">
+        <div class="pay-icon">⚡</div>
+        <h4>Buy Now Pay Later</h4>
+        <p>Simpl · LazyPay · ZestMoney</p>
+      </div>
+      <div class="pay-card">
+        <div class="pay-icon">🍔</div>
+        <h4>Food Aggregators</h4>
+        <p>Zomato · Swiggy · EazyDiner</p>
+      </div>
+      <div class="pay-card">
+        <div class="pay-icon">💵</div>
+        <h4>Cash</h4>
+        <p>Always welcome at the counter</p>
+      </div>
+      <div class="pay-card">
+        <div class="pay-icon">🎁</div>
+        <h4>Gift Cards & Loyalty</h4>
+        <p>Chai & Chill membership rewards</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOURS + CONTACT -->
+<section id="contact">
+  <div class="contact-grid">
+    <div class="info-box">
+      <h2>Opening Hours</h2>
+      <div class="hours-row"><span>Monday – Friday</span><span>8:00 AM – 11:00 PM</span></div>
+      <div class="hours-row"><span>Saturday</span><span>8:00 AM – Midnight</span></div>
+      <div class="hours-row"><span>Sunday</span><span>9:00 AM – 10:00 PM</span></div>
+      <div class="hours-row"><span>Public Holidays</span><span>10:00 AM – 9:00 PM</span></div>
+      <div class="happy-hour">
+        <p>🎉 Happy Hour — Weekdays 3 PM to 5 PM</p>
+        <p>20% off on all beverages. Show this page at the counter to avail the discount!</p>
+      </div>
+    </div>
+    <div class="info-box">
+      <h2>Find Us</h2>
+      <div class="contact-item">
+        <div class="contact-icon">📍</div>
+        <div class="contact-info">
+          <h4>Address</h4>
+          <p>Ground Floor, The Promenade Mall<br>Near VIP Road, Raipur<br>Chhattisgarh – 492001</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📞</div>
+        <div class="contact-info">
+          <h4>Phone / WhatsApp</h4>
+          <p>+91 98765 43210<br>+91 77415 00123</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">✉️</div>
+        <div class="contact-info">
+          <h4>Email</h4>
+          <p>hello@chaiandchill.in</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📸</div>
+        <div class="contact-info">
+          <h4>Follow Us</h4>
+          <p>@chaiandchill_raipur<br>Instagram · Facebook · YouTube</p>
+        </div>
+      </div>
+      <div class="map-placeholder">
+        <span style="font-size:2rem">🗺</span>
+        <p>Embed Google Maps here</p>
+        <p style="font-size:.75rem;opacity:.7">Replace with your Google Maps iframe</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo" style="font-family:'Playfair Display',serif;font-size:1.5rem;color:#F9C6D8;font-style:italic">Chai & Chill ☕</div>
+      <p>Raipur's most-loved all-day cafe. Crafting memories over artisan coffee and wholesome food since 2022. Come as you are — stay as long as you like.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#order">Place an Order</a></li>
+        <li><a href="#menu">Our Menu</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#reservation">Reservations</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#order">Dine In</a></li>
+        <li><a href="#order">Take Away</a></li>
+        <li><a href="#reservation">Private Events</a></li>
+        <li><a href="#payment">Loyalty Card</a></li>
+        <li><a href="#payment">Gift Cards</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="tel:+919876543210">+91 98765 43210</a></li>
+        <li><a href="mailto:hello@chaiandchill.in">hello@chaiandchill.in</a></li>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Facebook</a></li>
+        <li><a href="#">Google Maps</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Chai & Chill Cafe, Raipur · Made with 💜 in Chhattisgarh · All rights reserved</p>
+    <div class="social-links">
+      <button class="social-btn" aria-label="Instagram">📸</button>
+      <button class="social-btn" aria-label="Facebook">📘</button>
+      <button class="social-btn" aria-label="YouTube">▶️</button>
+    </div>
+  </div>
+</footer>
+
+<!-- CART FAB -->
+<button class="cart-fab" onclick="toggleCart()" aria-label="View Cart">
+  🛒
+  <span class="cart-count" id="cart-count">0</span>
+</button>
+<div class="cart-panel" id="cart-panel">
+  <div class="cart-header">
+    <h4>🛒 Your Order</h4>
+    <button class="cart-close" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cart-items">
+    <div class="cart-empty" id="cart-empty">Your cart is empty 🌸<br><small>Add items from the menu above</small></div>
+  </div>
+  <div class="cart-footer" id="cart-footer" style="display:none">
+    <div class="cart-total" id="cart-total">Total: ₹ 0</div>
+    <button class="checkout-btn" onclick="handleCheckout()">Checkout →</button>
+  </div>
+</div>
+
+<script>
+  // ── MOBILE MENU ──
+  function toggleMobileMenu(){
+    const m=document.getElementById('mobile-menu');
+    m.classList.toggle('open');
+  }
+  function closeMobileMenu(){
+    document.getElementById('mobile-menu').classList.remove('open');
+  }
+
+  // ── ORDER MODE ──
+  function selectMode(mode){
+    const btnDine=document.getElementById('btn-dine');
+    const btnTake=document.getElementById('btn-take');
+    const tf=document.getElementById('table-field');
+    if(mode==='dine'){btnDine.classList.add('active');btnTake.classList.remove('active');tf.style.display='flex';}
+    else{btnTake.classList.add('active');btnDine.classList.remove('active');tf.style.display='none';}
+  }
+
+  function handleOrder(){
+    const name=document.getElementById('o-name').value.trim();
+    const phone=document.getElementById('o-phone').value.trim();
+    if(!name||!phone){alert('Please enter your name and phone number.');return;}
+    alert('🎉 Order Received!\n\nThank you, '+name+'!\nWe\'ll confirm your order on WhatsApp at '+phone+' shortly.\n\nSee you at Chai & Chill! ☕');
+  }
+
+  function handleReservation(){
+    const name=document.getElementById('r-name').value.trim();
+    const phone=document.getElementById('r-phone').value.trim();
+    const date=document.getElementById('r-date').value;
+    const time=document.getElementById('r-time').value;
+    if(!name||!phone){alert('Please enter your name and phone number.');return;}
+    alert('🌸 Reservation Confirmed!\n\nThank you, '+name+'!\nYour table is reserved'+(date?' for '+date:'')+''+(time?' at '+time:'')+'. We\'ll send a WhatsApp confirmation to '+phone+'.\n\nCan\'t wait to see you! 💜');
+  }
+
+  // ── MENU FILTER ──
+  function filterMenu(cat, btn){
+    document.querySelectorAll('.menu-tab').forEach(t=>t.classList.remove('active'));
+    btn.classList.add('active');
+    const cards=document.querySelectorAll('.menu-card');
+    cards.forEach(card=>{
+      if(cat==='all'||card.dataset.cat===cat){card.style.display='block';}
+      else{card.style.display='none';}
+    });
+  }
+
+  // ── CART ──
+  let cart=[];
+  function addToCart(name,price){
+    const existing=cart.find(i=>i.name===name);
+    if(existing){existing.qty++;}
+    else{cart.push({name,price,qty:1});}
+    updateCart();
+    const btns=document.querySelectorAll('.add-btn');
+    btns.forEach(btn=>{
+      if(btn.getAttribute('onclick')&&btn.getAttribute('onclick').includes(name)){
+        const orig=btn.textContent;
+        btn.textContent='✓ Added!';btn.style.background='var(--mint)';btn.style.color='var(--mint-deep)';
+        setTimeout(()=>{btn.textContent=orig;btn.style.background='';btn.style.color='';},1200);
+      }
+    });
+  }
+  function removeFromCart(name){
+    cart=cart.filter(i=>i.name!==name);
+    updateCart();
+  }
+  function updateCart(){
+    const count=cart.reduce((a,i)=>a+i.qty,0);
+    const total=cart.reduce((a,i)=>a+i.price*i.qty,0);
+    document.getElementById('cart-count').textContent=count;
+    const itemsEl=document.getElementById('cart-items');
+    const emptyEl=document.getElementById('cart-empty');
+    const footerEl=document.getElementById('cart-footer');
+    if(cart.length===0){
+      emptyEl.style.display='block';footerEl.style.display='none';
+      itemsEl.innerHTML='';itemsEl.appendChild(emptyEl);
+    } else {
+      emptyEl.style.display='none';footerEl.style.display='flex';
+      const html=cart.map(i=>`
+        <div class="cart-item">
+          <div>
+            <div class="cart-item-name">${i.name} ×${i.qty}</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:.3rem">
+            <span class="cart-item-price">₹ ${i.price*i.qty}</span>
+            <button class="cart-item-remove" onclick="removeFromCart('${i.name}')" aria-label="Remove">✕</button>
+          </div>
+        </div>`).join('');
+      itemsEl.innerHTML=html;
+      document.getElementById('cart-total').textContent='Total: ₹ '+total;
+    }
+  }
+  function toggleCart(){
+    document.getElementById('cart-panel').classList.toggle('open');
+  }
+  function handleCheckout(){
+    if(cart.length===0){alert('Add some items first!');return;}
+    const total=cart.reduce((a,i)=>a+i.price*i.qty,0);
+    const items=cart.map(i=>i.name+' ×'+i.qty).join(', ');
+    alert('✅ Order Placed!\n\nItems: '+items+'\nTotal: ₹ '+total+'\n\nProceed to payment at the counter or via UPI QR code.\nThank you for choosing Chai & Chill! ☕');
+    cart=[];updateCart();
+    document.getElementById('cart-panel').classList.remove('open');
+  }
+
+  // Set today as min date
+  const today=new Date().toISOString().split('T')[0];
+  const dateInputs=document.querySelectorAll('input[type="date"]');
+  dateInputs.forEach(d=>{d.min=today;d.value=today;});
+</script>
+</body>
+</html>

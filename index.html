@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zarqa — Fine Indian Dining</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#C9A84C;--gold2:#E8C97A;--dark:#0A0704;--dark2:#130E08;--dark3:#1C1510;
+  --surface:#1E1812;--surface2:#252018;--text:#F5EDD8;--muted:#9A8B6E;--border:#2E2618;
+}
+html{scroll-behavior:smooth}
+body{background:var(--dark);color:var(--text);font-family:'Raleway',sans-serif;min-height:100vh;overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:1.2rem 2rem;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(to bottom,rgba(10,7,4,.92),transparent)}
+.nav-logo{font-family:'Cinzel',serif;font-size:1.1rem;color:var(--gold);letter-spacing:4px;cursor:pointer}
+.nav-back{font-family:'Raleway',sans-serif;font-size:.72rem;letter-spacing:2px;color:var(--muted);cursor:pointer;background:none;border:none;display:flex;align-items:center;gap:.4rem;transition:color .3s}
+.nav-back:hover{color:var(--gold)}
+.nav-back.hidden{opacity:0;pointer-events:none}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;background:radial-gradient(ellipse at 50% 30%,#2A1F0A 0%,var(--dark) 68%)}
+.hero-ornament{font-size:1rem;color:var(--gold);letter-spacing:8px;margin-bottom:1.2rem;opacity:.75}
+.hero-title{font-family:'Cinzel',serif;font-size:clamp(3.5rem,9vw,8rem);font-weight:600;letter-spacing:5px;background:linear-gradient(135deg,#A07830,var(--gold2),#C9A84C,#F0DFA0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.05}
+.hero-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(1rem,2.5vw,1.5rem);color:var(--muted);margin:1.2rem 0 3rem;letter-spacing:2px}
+.divider{display:flex;align-items:center;gap:12px;margin:1.5rem auto;width:min(360px,85%)}
+.divider-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.divider-dot{width:6px;height:6px;background:var(--gold);transform:rotate(45deg);flex-shrink:0}
+.btn{font-family:'Cinzel',serif;font-size:.8rem;letter-spacing:3px;text-transform:uppercase;padding:.9rem 2.8rem;border:1px solid var(--gold);background:transparent;color:var(--gold);cursor:pointer;transition:all .35s;position:relative;overflow:hidden;display:inline-block}
+.btn::before{content:'';position:absolute;inset:0;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .35s}
+.btn:hover::before{transform:scaleX(1)}
+.btn:hover{color:var(--dark)}
+.btn span{position:relative;z-index:1}
+.scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);color:var(--muted);font-size:.65rem;letter-spacing:4px;animation:bob 2.2s ease-in-out infinite;white-space:nowrap}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(9px)}}
+
+/* SCREENS */
+.screen{display:none;min-height:100vh;align-items:center;justify-content:center;flex-direction:column;padding:5rem 1.5rem}
+.screen.active{display:flex}
+.screen-label{font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:4px;color:var(--muted);margin-bottom:.6rem}
+.screen-title{font-family:'Cinzel',serif;font-size:clamp(1.6rem,4vw,2.6rem);color:var(--gold);letter-spacing:3px;text-align:center}
+.screen-sub{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--muted);font-size:1.1rem;text-align:center;margin-top:.4rem}
+
+/* DINE CHOICE */
+.choice-wrap{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;width:min(620px,92%);margin-top:2.5rem}
+.choice-card{border:1px solid var(--border);background:var(--surface);padding:2.8rem 2rem;text-align:center;cursor:pointer;transition:all .4s;position:relative;overflow:hidden}
+.choice-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,.12),transparent);opacity:0;transition:opacity .4s}
+.choice-card:hover{border-color:var(--gold);transform:translateY(-5px)}
+.choice-card:hover::after{opacity:1}
+.choice-icon{font-size:2.6rem;margin-bottom:1rem;display:block}
+.choice-name{font-family:'Cinzel',serif;font-size:1.05rem;letter-spacing:2px;color:var(--gold);margin-bottom:.6rem}
+.choice-desc{font-size:.78rem;color:var(--muted);line-height:1.7}
+
+/* MENU */
+#menu-screen{padding:5.5rem 1.5rem 8rem;justify-content:flex-start}
+.menu-header{text-align:center;margin-bottom:2.5rem;width:100%}
+.menu-badge{display:inline-block;font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:3px;border:1px solid var(--gold);color:var(--gold);padding:.3rem 1.2rem;margin-bottom:.8rem}
+.tab-bar{display:flex;border-bottom:1px solid var(--border);width:min(780px,96%);overflow-x:auto;margin-bottom:2.5rem;scrollbar-width:none}
+.tab-bar::-webkit-scrollbar{display:none}
+.tab{font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:2px;padding:.75rem 1.3rem;cursor:pointer;color:var(--muted);border:none;border-bottom:2px solid transparent;white-space:nowrap;transition:all .3s;background:transparent;flex-shrink:0}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.tab:hover:not(.active){color:var(--text)}
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.2rem;width:min(980px,96%)}
+.menu-item{background:var(--surface);border:1px solid var(--border);padding:1.3rem;transition:all .3s;display:flex;flex-direction:column;gap:.6rem}
+.menu-item:hover{border-color:rgba(201,168,76,.4);background:var(--surface2)}
+.mi-top{display:flex;justify-content:space-between;align-items:flex-start;gap:.6rem}
+.mi-name{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:var(--text);flex:1;line-height:1.3}
+.mi-price{font-family:'Cinzel',serif;color:var(--gold);font-size:.88rem;white-space:nowrap;padding-top:.1rem}
+.mi-desc{font-size:.76rem;color:var(--muted);line-height:1.65;flex:1}
+.mi-tags{display:flex;gap:.4rem;flex-wrap:wrap}
+.tag{font-size:.62rem;letter-spacing:1px;padding:.18rem .48rem;border:1px solid;text-transform:uppercase;border-radius:1px}
+.tag-veg{border-color:#4CAF50;color:#4CAF50}
+.tag-nonveg{border-color:#E57373;color:#E57373}
+.tag-spicy{border-color:#FF7043;color:#FF7043}
+.tag-chef{border-color:var(--gold);color:var(--gold)}
+.add-btn{align-self:flex-end;font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:2px;padding:.38rem .9rem;border:1px solid var(--gold);background:transparent;color:var(--gold);cursor:pointer;transition:all .28s;margin-top:.2rem}
+.add-btn:hover,.add-btn.added{background:var(--gold);color:var(--dark)}
+
+/* CART BAR */
+.cart-bar{position:fixed;bottom:0;left:0;right:0;background:var(--surface2);border-top:1px solid var(--gold);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;transform:translateY(100%);transition:transform .4s;z-index:150}
+.cart-bar.visible{transform:translateY(0)}
+.cart-info{font-family:'Cormorant Garamond',serif;font-size:1.05rem}
+.cart-count-badge{color:var(--gold);font-family:'Cinzel',serif}
+
+/* CART PAGE */
+#cart-screen{justify-content:flex-start;padding:5.5rem 1.5rem 4rem}
+.cart-wrap{width:min(640px,96%);margin:0 auto}
+.cart-row{display:flex;align-items:center;gap:1rem;padding:.9rem 0;border-bottom:1px solid var(--border)}
+.cr-name{flex:1;font-family:'Cormorant Garamond',serif;font-size:1rem;line-height:1.3}
+.qty-ctrl{display:flex;align-items:center;gap:.5rem}
+.qty-btn{width:26px;height:26px;border:1px solid var(--border);background:transparent;color:var(--gold);cursor:pointer;font-size:1.1rem;line-height:1;transition:all .2s}
+.qty-btn:hover{border-color:var(--gold);background:rgba(201,168,76,.1)}
+.qty-num{font-family:'Cinzel',serif;font-size:.8rem;min-width:18px;text-align:center}
+.cr-price{font-family:'Cinzel',serif;color:var(--gold);font-size:.85rem;min-width:65px;text-align:right}
+.cart-total-block{text-align:right;width:100%;padding-top:1rem}
+.total-row{display:flex;justify-content:space-between;font-size:.85rem;color:var(--muted);padding:.3rem 0}
+.total-row.grand{font-family:'Cinzel',serif;font-size:.95rem;color:var(--text);border-top:1px solid var(--gold);margin-top:.5rem;padding-top:.8rem}
+.total-row.grand span:last-child{color:var(--gold)}
+
+/* PAYMENT */
+#pay-screen{padding:5rem 1.5rem 4rem;justify-content:flex-start}
+.pay-card{background:var(--surface);border:1px solid var(--border);padding:2.5rem}
+.fsec{margin-bottom:2rem}
+.fsec-title{font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:3px;color:var(--gold);margin-bottom:1rem}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.fg{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1rem}
+.fg label{font-size:.68rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+.fg input,.fg select{background:var(--dark3);border:1px solid var(--border);color:var(--text);padding:.7rem .9rem;font-family:'Raleway',sans-serif;font-size:.88rem;outline:none;transition:border .3s;appearance:none;-webkit-appearance:none}
+.fg input:focus,.fg select:focus{border-color:var(--gold)}
+.pay-methods{display:flex;gap:.7rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.pm{flex:1;min-width:80px;padding:.7rem .5rem;border:1px solid var(--border);background:transparent;cursor:pointer;font-family:'Raleway',sans-serif;font-size:.72rem;color:var(--muted);text-align:center;transition:all .3s;display:flex;flex-direction:column;align-items:center;gap:.3rem}
+.pm.active,.pm:hover{border-color:var(--gold);color:var(--gold)}
+.pm-icon{font-size:1.2rem}
+.pay-summary{background:var(--dark3);padding:1.2rem;margin-bottom:1.5rem;border:1px solid var(--border)}
+.ps-row{display:flex;justify-content:space-between;font-size:.82rem;color:var(--muted);padding:.3rem 0}
+.ps-row.grand{color:var(--text);font-family:'Cinzel',serif;font-size:.9rem;border-top:1px solid var(--border);margin-top:.5rem;padding-top:.75rem}
+.ps-row.grand span:last-child{color:var(--gold)}
+.btn-full{width:100%;text-align:center}
+
+/* SUCCESS */
+#success-screen{background:radial-gradient(ellipse at center,#1C1A08 0%,var(--dark) 70%)}
+.success-star{font-size:2.8rem;margin-bottom:1.5rem;animation:glowpulse 2.5s ease-in-out infinite;color:var(--gold)}
+@keyframes glowpulse{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.15);opacity:1}}
+.success-label{font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:4px;color:var(--muted);margin-bottom:.4rem}
+.success-num{font-family:'Cormorant Garamond',serif;font-size:4.5rem;color:var(--gold);font-weight:300;line-height:1}
+.success-msg{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--muted);font-size:1.05rem;max-width:380px;text-align:center;line-height:1.9;margin-top:1.2rem}
+
+/* ANIMATIONS */
+.fadein{animation:fi .55s ease forwards}
+@keyframes fi{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:500px){
+  .choice-wrap,.frow{grid-template-columns:1fr}
+  .pay-methods{gap:.5rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo" onclick="restart()">ZARQA</span>
+  <button class="nav-back hidden" id="nav-back" onclick="goBack()">&#8592; BACK</button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="fadein">
+    <p class="hero-ornament">&#10022; &nbsp; EST. 2018 &nbsp; &#10022;</p>
+    <h1 class="hero-title">ZARQA</h1>
+    <p class="hero-sub">Where ancient spice meets modern refinement</p>
+    <div class="divider"><div class="divider-line"></div><div class="divider-dot"></div><div class="divider-line"></div></div>
+    <button class="btn" onclick="showScreen('dine-screen')"><span>BEGIN YOUR JOURNEY</span></button>
+  </div>
+  <p class="scroll-hint">&#10022; &nbsp; AWARD-WINNING INDIAN FINE DINING &nbsp; &#10022;</p>
+</section>
+
+<!-- DINE / TAKEAWAY -->
+<section id="dine-screen" class="screen">
+  <div class="fadein" style="text-align:center;width:100%">
+    <p class="screen-label">WELCOME TO ZARQA</p>
+    <h2 class="screen-title">HOW SHALL WE SERVE YOU?</h2>
+    <p class="screen-sub">Choose your dining preference to continue</p>
+    <div class="divider" style="margin:1.2rem auto 0"><div class="divider-line"></div><div class="divider-dot"></div><div class="divider-line"></div></div>
+    <div class="choice-wrap" style="margin-left:auto;margin-right:auto">
+      <div class="choice-card" onclick="selectDining('Dine In')">
+        <span class="choice-icon">&#127969;</span>
+        <p class="choice-name">DINE IN</p>
+        <p class="choice-desc">Savour each course in our candlelit dining room. White-glove service, live tabla music & timeless luxury.</p>
+      </div>
+      <div class="choice-card" onclick="selectDining('Takeaway')">
+        <span class="choice-icon">&#127873;</span>
+        <p class="choice-name">TAKE AWAY</p>
+        <p class="choice-desc">Carry the flavours of Zarqa home. Each dish packaged with care in our signature gold &amp; black boxes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section id="menu-screen" class="screen">
+  <div class="menu-header fadein">
+    <div class="menu-badge" id="dine-badge">DINE IN MENU</div>
+    <h2 class="screen-title">THE MENU</h2>
+    <p class="screen-sub">Crafted by Executive Chef Arjun Malhotra &mdash; Michelin Recommended</p>
+  </div>
+  <div class="tab-bar">
+    <button class="tab active" onclick="showCat(this,'starters')">STARTERS</button>
+    <button class="tab" onclick="showCat(this,'mains')">MAINS</button>
+    <button class="tab" onclick="showCat(this,'breads')">BREADS &amp; RICE</button>
+    <button class="tab" onclick="showCat(this,'desserts')">DESSERTS</button>
+    <button class="tab" onclick="showCat(this,'drinks')">DRINKS</button>
+  </div>
+  <div class="menu-grid" id="menu-grid"></div>
+</section>
+
+<!-- CART REVIEW -->
+<section id="cart-screen" class="screen">
+  <div class="cart-wrap fadein">
+    <p class="screen-label" style="text-align:center">YOUR SELECTION</p>
+    <h2 class="screen-title">ORDER REVIEW</h2>
+    <p class="screen-sub" id="cart-dine-label">Dine In &mdash; Your Order</p>
+    <div class="divider" style="margin:1.2rem auto 2rem"><div class="divider-line"></div><div class="divider-dot"></div><div class="divider-line"></div></div>
+    <div id="cart-list"></div>
+    <div class="cart-total-block" id="cart-total-block"></div>
+    <div style="display:flex;justify-content:flex-end;margin-top:2rem;gap:1rem;flex-wrap:wrap">
+      <button class="btn" onclick="showScreen('menu-screen')"><span>+ ADD MORE</span></button>
+      <button class="btn" onclick="showScreen('pay-screen')"><span>PROCEED &#8594;</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- PAYMENT -->
+<section id="pay-screen" class="screen">
+  <div class="fadein" style="width:min(540px,97%);margin:0 auto">
+    <div style="text-align:center;margin-bottom:2rem">
+      <p class="screen-label">SECURE CHECKOUT</p>
+      <h2 class="screen-title">PAYMENT</h2>
+    </div>
+    <div class="pay-card">
+      <div class="fsec">
+        <p class="fsec-title">GUEST DETAILS</p>
+        <div class="frow">
+          <div class="fg"><label>First Name</label><input type="text" placeholder="Aryan"></div>
+          <div class="fg"><label>Last Name</label><input type="text" placeholder="Sharma"></div>
+        </div>
+        <div class="fg"><label>Email Address</label><input type="email" placeholder="aryan@email.com"></div>
+        <div class="fg"><label>Mobile Number</label><input type="tel" placeholder="+91 98765 43210"></div>
+      </div>
+      <div class="fsec">
+        <p class="fsec-title">PAYMENT METHOD</p>
+        <div class="pay-methods">
+          <button class="pm active" onclick="setMethod(this,'card')"><span class="pm-icon">&#128179;</span>Card</button>
+          <button class="pm" onclick="setMethod(this,'upi')"><span class="pm-icon">&#128242;</span>UPI</button>
+          <button class="pm" onclick="setMethod(this,'netbank')"><span class="pm-icon">&#127970;</span>Net Banking</button>
+          <button class="pm" onclick="setMethod(this,'cash')"><span class="pm-icon">&#128181;</span>Cash</button>
+        </div>
+        <div id="f-card">
+          <div class="fg"><label>Card Number</label><input type="text" id="cardnum" placeholder="4242  4242  4242  4242" maxlength="22" oninput="fmtCard(this)"></div>
+          <div class="frow">
+            <div class="fg"><label>Expiry</label><input type="text" id="expiry" placeholder="MM / YY" maxlength="7" oninput="fmtExpiry(this)"></div>
+            <div class="fg"><label>CVV</label><input type="password" placeholder="&bull;&bull;&bull;" maxlength="3"></div>
+          </div>
+          <div class="fg"><label>Name on Card</label><input type="text" placeholder="ARYAN SHARMA" style="text-transform:uppercase"></div>
+        </div>
+        <div id="f-upi" style="display:none">
+          <div class="fg"><label>UPI ID</label><input type="text" placeholder="aryan@paytm"></div>
+          <p style="font-size:.75rem;color:var(--muted);margin-top:-.4rem;margin-bottom:.5rem">You will receive a payment request on your UPI app.</p>
+        </div>
+        <div id="f-netbank" style="display:none">
+          <div class="fg"><label>Select Your Bank</label>
+            <select>
+              <option value="">&#8212; Choose Bank &#8212;</option>
+              <option>State Bank of India</option>
+              <option>HDFC Bank</option>
+              <option>ICICI Bank</option>
+              <option>Axis Bank</option>
+              <option>Kotak Mahindra Bank</option>
+              <option>Punjab National Bank</option>
+              <option>Bank of Baroda</option>
+            </select>
+          </div>
+        </div>
+        <div id="f-cash" style="display:none">
+          <div style="border:1px solid var(--border);padding:1.2rem;font-size:.82rem;color:var(--muted);line-height:1.8">
+            <strong style="color:var(--gold);font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:2px;display:block;margin-bottom:.5rem">CASH ON ARRIVAL</strong>
+            Please carry exact change in INR. Our courteous staff will collect payment at the table or upon delivery.
+          </div>
+        </div>
+      </div>
+      <div class="pay-summary">
+        <p class="fsec-title" style="margin-bottom:.8rem">ORDER SUMMARY</p>
+        <div id="pay-rows"></div>
+        <div class="ps-row grand"><span>TOTAL PAYABLE</span><span id="grand-total">&#8377;0</span></div>
+      </div>
+      <p style="font-size:.63rem;color:var(--muted);letter-spacing:1px;margin-bottom:1rem">&#128274; 256-BIT ENCRYPTED &nbsp;|&nbsp; PCI DSS COMPLIANT &nbsp;|&nbsp; RAZORPAY SECURED</p>
+      <button class="btn btn-full" onclick="processPayment()"><span id="pay-btn-label">CONFIRM &amp; PAY</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- SUCCESS -->
+<section id="success-screen" class="screen">
+  <div class="fadein" style="text-align:center;display:flex;flex-direction:column;align-items:center">
+    <div class="success-star">&#10022;</div>
+    <p class="success-label">ORDER CONFIRMED</p>
+    <div class="success-num" id="success-num">#2847</div>
+    <div class="divider" style="margin:1.5rem auto"><div class="divider-line"></div><div class="divider-dot"></div><div class="divider-line"></div></div>
+    <p class="success-msg" id="success-msg">Your table is being beautifully set. Our team will reach out shortly.</p>
+    <button class="btn" style="margin-top:2.5rem" onclick="restart()"><span>ORDER AGAIN</span></button>
+  </div>
+</section>
+
+<!-- FLOATING CART BAR -->
+<div class="cart-bar" id="cart-bar">
+  <div class="cart-info">
+    <span class="cart-count-badge" id="cbar-count">0</span> items &mdash; <span id="cbar-total">&#8377;0</span>
+  </div>
+  <button class="btn" onclick="showScreen('cart-screen')"><span>VIEW ORDER &#8594;</span></button>
+</div>
+
+<script>
+const MENU={
+  starters:[
+    {name:"Gilafi Seekh Kebab",price:520,desc:"Minced lamb with fresh herbs & raw papaya, char-grilled in the clay tandoor, served with signature mint-coriander chutney.",tags:["nonveg","chef","spicy"]},
+    {name:"Paneer Tikka Royale",price:420,desc:"Aged cottage cheese cubes marinated in saffron, hung curd & mace, slow-roasted until beautifully charred.",tags:["veg","chef"]},
+    {name:"Murgh Malai Tikka",price:480,desc:"Silken chicken in cream cheese, green cardamom & dill, grilled low and slow until golden throughout.",tags:["nonveg"]},
+    {name:"Dahi ke Sholay",price:360,desc:"Crisp semolina shells filled with spiced yogurt, pomegranate molasses & a drizzle of aged tamarind.",tags:["veg","spicy"]},
+    {name:"Rawalpindi Chaat",price:290,desc:"Heritage street chaat elevated with tamarind pearls, sev tuile & micro-herb confetti.",tags:["veg"]},
+    {name:"Raan Rolls",price:580,desc:"24-hour slow-cooked lamb leg shreds in warqi paratha with pickled onion & green chutney.",tags:["nonveg","spicy","chef"]},
+  ],
+  mains:[
+    {name:"Dum Biryani Nizami",price:780,desc:"Aged basmati slow-cooked on dum under sealed dough with saffron, caramelised onions & rose water.",tags:["nonveg","chef"]},
+    {name:"Dal Makhani 1947",price:480,desc:"Black lentils simmered for 12 hours over live flame, finished with truffle-infused butter.",tags:["veg","chef"]},
+    {name:"Butter Chicken Heritage",price:680,desc:"Our grandmother's recipe — tangy tomato, sun-dried fenugreek & cream aged for depth.",tags:["nonveg"]},
+    {name:"Rogan Josh",price:750,desc:"Kashmiri lamb shanks slow-braised with Maval whole spices & bright-red Kashmiri chilies.",tags:["nonveg","spicy"]},
+    {name:"Paneer Lababdar",price:520,desc:"Hand-pressed cottage cheese in a rich caramelised onion gravy with kasuri methi & cream.",tags:["veg"]},
+    {name:"Malabar Fish Curry",price:820,desc:"Black pomfret in a coconut, tamarind & Guntur chili broth, served over red rice.",tags:["nonveg","spicy"]},
+    {name:"Vegetable Kofta Nawabi",price:460,desc:"Stuffed dumpling koftas with a pistachio-saffron filling in a golden gravy.",tags:["veg"]},
+    {name:"Palak Gosht",price:720,desc:"Tender mutton enveloped in house-blanched spinach, spiced with black pepper & long pepper.",tags:["nonveg","spicy"]},
+  ],
+  breads:[
+    {name:"Tandoori Roti Quartet",price:120,desc:"Plain, butter, missi & garlic — a selection of four, straight from the tandoor.",tags:["veg"]},
+    {name:"Sheermal",price:150,desc:"Saffron-laced, flaky milk bread from the Mughal kitchens — best with a slow-cooked curry.",tags:["veg","chef"]},
+    {name:"Peshwari Naan",price:160,desc:"Sweet naan stuffed with coconut flakes, crushed almonds & jaggery, lightly toasted.",tags:["veg"]},
+    {name:"Saffron Pulao",price:280,desc:"Long-grain basmati tossed with caramelised onions, whole spices & a saffron bloom.",tags:["veg"]},
+    {name:"Warqi Paratha",price:130,desc:"Six layers of flaky bread, each brushed with pure desi ghee and baked in the tandoor.",tags:["veg"]},
+    {name:"Garlic Butter Kulcha",price:140,desc:"Soft kulcha blistered in the tandoor, finished with roasted garlic butter & coriander.",tags:["veg"]},
+  ],
+  desserts:[
+    {name:"Gulkand Gulab Jamun",price:280,desc:"Saffron-khoya dumplings stuffed with rose-petal preserve, served warm in cardamom syrup.",tags:["veg","chef"]},
+    {name:"Shahi Tukda Deconstruct",price:320,desc:"Caramelised brioche, saffron rabri mousse, rose jelly & pistachio dust.",tags:["veg"]},
+    {name:"Alphonso Kulfi",price:240,desc:"Slow-frozen raw Alphonso mango kulfi on a silver skewer — no shortcuts.",tags:["veg"]},
+    {name:"Rabri Falooda Royale",price:260,desc:"Rose falooda with saffron rabri, basil seeds & a vanilla ice cream quenelle.",tags:["veg"]},
+  ],
+  drinks:[
+    {name:"Zarqa Signature Mocktail",price:320,desc:"Rose, lychee & lemongrass infusion, shaken with kaffir lime leaf and finished with edible gold leaf.",tags:["veg","chef"]},
+    {name:"Masala Chai Reserve",price:180,desc:"Whole-spice tea brewed for 45 minutes, poured tableside from a copper sil-batta.",tags:["veg"]},
+    {name:"Thandai Royale",price:260,desc:"Classic thandai with saffron, gulkand, rose & crushed pistachios.",tags:["veg"]},
+    {name:"Fresh Lime Soda",price:120,desc:"Hand-squeezed lime, chilled soda, black salt — sweet or salted at your pleasure.",tags:["veg"]},
+    {name:"Mango Lassi",price:200,desc:"Thick Alphonso mango lassi, whisked with cardamom & topped with malai.",tags:["veg"]},
+    {name:"Kokum Sherbet",price:160,desc:"Chilled Goan kokum extract with cumin, black salt & a mint sprig.",tags:["veg"]},
+  ]
+};
+
+let cart={},diningType='',currentCat='starters',currentScreen='hero',payMethod='card';
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const backBtn=document.getElementById('nav-back');
+  if(id==='hero'){window.scrollTo({top:0,behavior:'smooth'});backBtn.classList.add('hidden');currentScreen='hero';return;}
+  const el=document.getElementById(id);
+  el.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  backBtn.classList.remove('hidden');
+  currentScreen=id;
+  if(id==='cart-screen')renderCartPage();
+  if(id==='pay-screen')renderPaySummary();
+}
+
+function goBack(){
+  const map={'dine-screen':'hero','menu-screen':'dine-screen','cart-screen':'menu-screen','pay-screen':'cart-screen','success-screen':'hero'};
+  if(map[currentScreen])showScreen(map[currentScreen]);
+}
+
+function selectDining(type){
+  diningType=type;
+  document.getElementById('dine-badge').textContent=type.toUpperCase()+' MENU';
+  document.getElementById('cart-dine-label').textContent=type+' — Your Order';
+  showScreen('menu-screen');renderMenu();
+}
+
+function showCat(btn,cat){
+  currentCat=cat;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');renderMenu();
+}
+
+function renderMenu(){
+  const items=MENU[currentCat]||[];
+  document.getElementById('menu-grid').innerHTML=items.map(item=>{
+    const inCart=cart[item.name]&&cart[item.name].qty>0;
+    const tags=item.tags.map(t=>`<span class="tag tag-${t}">${t==='chef'?'chef special':t}</span>`).join('');
+    const safeName=item.name.replace(/'/g,"\\'");
+    return `<div class="menu-item fadein">
+      <div class="mi-top"><span class="mi-name">${item.name}</span><span class="mi-price">&#8377;${item.price}</span></div>
+      <p class="mi-desc">${item.desc}</p>
+      <div class="mi-tags">${tags}</div>
+      <button class="add-btn ${inCart?'added':''}" onclick="addToCart('${safeName}',${item.price})">${inCart?'&#10003; ADDED':'+ ADD'}</button>
+    </div>`;
+  }).join('');
+}
+
+function addToCart(name,price){
+  if(!cart[name])cart[name]={qty:0,price,name};
+  cart[name].qty++;updateCartBar();renderMenu();
+}
+
+function changeQty(name,delta){
+  if(!cart[name])return;
+  cart[name].qty=Math.max(0,cart[name].qty+delta);
+  if(cart[name].qty===0)delete cart[name];
+  updateCartBar();renderCartPage();
+}
+
+function updateCartBar(){
+  const entries=Object.values(cart).filter(v=>v.qty>0);
+  const count=entries.reduce((s,v)=>s+v.qty,0);
+  const total=entries.reduce((s,v)=>s+v.qty*v.price,0);
+  document.getElementById('cbar-count').textContent=count;
+  document.getElementById('cbar-total').textContent='&#8377;'+total.toLocaleString('en-IN');
+  document.getElementById('cart-bar').classList.toggle('visible',count>0);
+}
+
+function renderCartPage(){
+  const entries=Object.values(cart).filter(v=>v.qty>0);
+  const list=document.getElementById('cart-list');
+  if(!entries.length){
+    list.innerHTML='<p style="text-align:center;color:var(--muted);padding:2rem 0;font-family:Cormorant Garamond,serif;font-style:italic">Your cart is empty. Please add items from the menu.</p>';
+    document.getElementById('cart-total-block').innerHTML='';return;
+  }
+  list.innerHTML=entries.map(v=>{
+    const safe=v.name.replace(/'/g,"\\'");
+    return `<div class="cart-row">
+      <span class="cr-name">${v.name}</span>
+      <div class="qty-ctrl">
+        <button class="qty-btn" onclick="changeQty('${safe}',-1)">&#8722;</button>
+        <span class="qty-num">${v.qty}</span>
+        <button class="qty-btn" onclick="changeQty('${safe}',1)">+</button>
+      </div>
+      <span class="cr-price">&#8377;${(v.qty*v.price).toLocaleString('en-IN')}</span>
+    </div>`;
+  }).join('');
+  const sub=entries.reduce((s,v)=>s+v.qty*v.price,0);
+  const tax=Math.round(sub*0.05);
+  document.getElementById('cart-total-block').innerHTML=`
+    <div class="total-row"><span>Subtotal</span><span>&#8377;${sub.toLocaleString('en-IN')}</span></div>
+    <div class="total-row"><span>GST (5%)</span><span>&#8377;${tax.toLocaleString('en-IN')}</span></div>
+    <div class="total-row grand"><span>TOTAL</span><span>&#8377;${(sub+tax).toLocaleString('en-IN')}</span></div>`;
+}
+
+function setMethod(btn,method){
+  payMethod=method;
+  document.querySelectorAll('.pm').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  ['card','upi','netbank','cash'].forEach(m=>document.getElementById('f-'+m).style.display=m===method?'block':'none');
+  document.getElementById('pay-btn-label').innerHTML=method==='cash'?'CONFIRM ORDER':'CONFIRM &amp; PAY';
+}
+
+function renderPaySummary(){
+  const entries=Object.values(cart).filter(v=>v.qty>0);
+  const sub=entries.reduce((s,v)=>s+v.qty*v.price,0);
+  const tax=Math.round(sub*0.05);
+  document.getElementById('pay-rows').innerHTML=
+    entries.map(v=>`<div class="ps-row"><span>${v.name} &times; ${v.qty}</span><span>&#8377;${(v.qty*v.price).toLocaleString('en-IN')}</span></div>`).join('')+
+    `<div class="ps-row"><span>GST (5%)</span><span>&#8377;${tax.toLocaleString('en-IN')}</span></div>`;
+  document.getElementById('grand-total').textContent='&#8377;'+(sub+tax).toLocaleString('en-IN');
+}
+
+function fmtCard(el){let v=el.value.replace(/\D/g,'').substring(0,16);el.value=v.replace(/(.{4})/g,'$1  ').trim()}
+function fmtExpiry(el){let v=el.value.replace(/\D/g,'').substring(0,4);if(v.length>2)v=v.substring(0,2)+' / '+v.substring(2);el.value=v}
+
+function processPayment(){
+  const entries=Object.values(cart).filter(v=>v.qty>0);
+  if(!entries.length){alert('Your cart is empty!');return;}
+  const num='#'+String(Math.floor(1000+Math.random()*9000));
+  document.getElementById('success-num').textContent=num;
+  document.getElementById('success-msg').textContent=diningType==='Dine In'
+    ?'Your table is being beautifully set. Our Maitre D\' will greet you at the entrance. Estimated seating: 10 minutes.'
+    :'Your order is being lovingly prepared. Estimated pickup time: 25\u201330 minutes. We will SMS you when ready.';
+  document.getElementById('cart-bar').classList.remove('visible');
+  cart={};showScreen('success-screen');
+}
+
+function restart(){
+  cart={};diningType='';currentCat='starters';payMethod='card';
+  updateCartBar();showScreen('hero');
+}
+
+renderMenu();
+</script>
+</body>
+</html>
